@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI-Based Timetable System</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- Top Nav -->
+  <header class="navbar">
+    <div class="brand">Timetable</div>
+    <div class="nav-actions">
+      <button id="studentTab" class="tab-btn">Student</button>
+      <button id="facultyTab" class="tab-btn">Faculty</button>
+      <button id="adminTab" class="tab-btn active">Admin</button>
+
+      <!-- Live Clock (time + date) -->
+      <div id="liveClock" aria-hidden="false">
+        <div class="time">00:00:00 AM</div>
+        <div class="date muted">Mon, Jan 1, 1970</div>
+      </div>
+
+      <button id="themeToggle" class="icon-btn" title="Toggle theme">🌓</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- Sidebar (we keep initial admin sidebar markup here; JS will swap it) -->
+    <aside class="sidebar" id="sidebar">
+      <section class="side-card role-card">
+        <h3>Role</h3>
+        <div class="role-area">
+          <label for="roleSelect">Choose role</label>
+          <select id="roleSelect" class="hover-green">
+            <option value="student">Student</option>
+            <option value="faculty">Faculty</option>
+            <option value="admin" selected>Admin</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="side-card section-card">
+        <h3>Section</h3>
+        <div class="section-area">
+          <label for="sectionSelect">Choose section</label>
+          <select id="sectionSelect"></select>
+          <p id="sectionStrength" class="muted"></p>
+        </div>
+      </section>
+
+      <section class="side-card latest-notice">
+        <h3>Latest Notice</h3>
+        <div class="latest-notice-body">
+          <span id="latestBadge" class="badge hidden">NEW</span>
+          <p id="noticeText" class="notice-text">No new notices.</p>
+          <p id="noticeDate" class="notice-date muted"></p>
+        </div>
+        <button class="primary-btn" id="viewAllNoticesBtn">View All Notices</button>
+      </section>
+
+      <section class="side-card quick-actions">
+        <h3>Quick Actions</h3>
+        <button class="ghost-btn">View My Schedule</button>
+        <button class="ghost-btn">Report Issue</button>
+        <button class="ghost-btn">Notifications <span class="notif">2</span></button>
+      </section>
+    </aside>
+
+    <!-- Main Content -->
+    <section class="content">
+      <div class="content-header">
+        <div>
+          <h2 id="contentTitle">Class Timetable</h2>
+          <p class="muted" id="dateRange">Mon – Sat</p>
+        </div>
+        <div class="controls">
+          <div class="day-tabs" id="dayTabs">
+            <button class="chip active" data-day="Mon">Mon</button>
+            <button class="chip" data-day="Tue">Tue</button>
+            <button class="chip" data-day="Wed">Wed</button>
+            <button class="chip" data-day="Thu">Thu</button>
+            <button class="chip" data-day="Fri">Fri</button>
+            <button class="chip" data-day="Sat">Sat</button>
+          </div>
+          <button id="printBtn" class="outline-btn">Print / Download</button>
+        </div>
+      </div>
+
+      <!-- Day Timetable (dynamic) -->
+      <div class="card">
+        <table class="timetable-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Time</th>
+              <th>Subject</th>
+              <th>Room</th>
+              <th>Teacher</th>
+            </tr>
+          </thead>
+          <tbody id="dayTimetableBody"></tbody>
+        </table>
+        <p class="muted pad-top" id="currentIndicator"></p>
+      </div>
+
+      <!-- Periods (dynamic) -->
+      <div class="card">
+        <h3>Periods</h3>
+        <table class="period-table">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="periodBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Smart Suggestions & Assistant -->
+      <div class="grid">
+        <div class="card">
+          <h3>Smart Suggestions</h3>
+          <ul id="suggestionsList" class="suggestions"></ul>
+        </div>
+        <div class="card">
+          <h3>AI Assistant</h3>
+          <p class="muted">Ask anything about timetable, clashes, rooms, exams…</p>
+          <div class="ask">
+            <input id="assistantInput" type="text" placeholder="Type your question…"/>
+            <button id="assistantBtn" class="primary-btn">Ask</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Notices Modal -->
+  <div id="noticesModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>All Notices</h3>
+        <button id="closeNotices" class="icon-btn" title="Close">✖</button>
+      </div>
+      <div class="modal-body">
+        <input id="noticeSearch" type="search" placeholder="Search notices…" class="search-input"/>
+        <ul id="noticesList" class="notices-list"></ul>
+      </div>
+    </div>
+    <div class="modal-backdrop"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
